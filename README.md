@@ -1,29 +1,3 @@
 # ttsjoke-frontend
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+TTS FrontEnd is a Vue powered application that demostrates calls to the backend serverless Azure services which calls a web service to get a random joke and calls Azure cognitive text to speech services to synthesize speech on the fly
