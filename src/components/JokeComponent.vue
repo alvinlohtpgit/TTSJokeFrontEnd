@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import querystring from "querystring";
+
 export default {
   name: "JokeComponent",
   data() {
@@ -36,13 +38,37 @@ export default {
           this.$http
             .post(
               "https://ttsjokefa.azurewebsites.net/api/ConvertTTS?code=FghVeXjL5R/4P1Sa0P1yWqc6suiva90yBBD8/bQBADANrymxeiwErA==",
-              { saythis: response.data }
+              querystring.stringify({ saythis: "Hello World 5" }),
+              {
+                headers: { "Content-Type": "application/x-www-form-urlencoded" }
+              }
             )
             .then(responsetts => {
+              console.log("File generated");
               // The file is generated
               this.jokedisplay = response.data;
+
+              /*
+
+              var delay = ( function() {
+    var timer = 0;
+    return function(callback, ms) {
+        clearTimeout (timer);
+        timer = setTimeout(callback, ms);
+    };
+})();
+Usage:
+
+delay(function(){
+    // do stuff
+}, 5000 ); // end delay
+
+
+               */
+
               this.$refs.audioplay.play();
-            });
+            })
+            .catch(error => { console.log('Error Post ' + error) });
         });
     }
   },
