@@ -34,6 +34,9 @@
         <p>
           The application then pushes the generated sound file to the audio control to be played.
         </p>
+          <small>
+              This application is tested on Firefox 66.0.5 and Google Chrome 74.0.3729.157
+          </small>
       </div>
     </div>
     <hr />
