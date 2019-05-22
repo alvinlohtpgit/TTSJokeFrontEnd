@@ -6,7 +6,7 @@
         <p>{{ jokedisplay }}</p>
         <br />
         <b-button size="lg" @click="randomjokeclick">Tell a Joke</b-button>
-        <audio ref="audioplay" :src="musicSrc" preload="auto"></audio>
+        <audio ref="audioplay" :src="musicSrc" preload="none"></audio>
       </div>
     </div>
   </div>
@@ -20,12 +20,12 @@ export default {
   data() {
     return {
       jokedisplay: "(Please press the button below to retrieve a random joke)",
-      musicSrc:
-        "https://ttsjokestorage.blob.core.windows.net/ttsjoketemp/TTSOutput.wav"
+      musicSrc: ""
     };
   },
   methods: {
     randomjokeclick() {
+      this.jokedisplay = "Contacting Azure Function .. please wait";
       this.$http
         .get(
           "https://ttsjokefa.azurewebsites.net/api/GetJoke?code=owJIuVXd4FUar1QvqxIdMvOY/w5QMWCNqXsKdYgKU6B9byvhOEC18A=="
@@ -38,42 +38,25 @@ export default {
           this.$http
             .post(
               "https://ttsjokefa.azurewebsites.net/api/ConvertTTS?code=FghVeXjL5R/4P1Sa0P1yWqc6suiva90yBBD8/bQBADANrymxeiwErA==",
-              querystring.stringify({ saythis: "Hello World 5" }),
+              querystring.stringify({ saythis: response.data }),
               {
                 headers: { "Content-Type": "application/x-www-form-urlencoded" }
               }
             )
             .then(responsetts => {
-              console.log("File generated");
+              console.log("File generated - " + responsetts.data);
               // The file is generated
               this.jokedisplay = response.data;
 
-              /*
+              this.musicSrc = "https://ttsjokestorage.blob.core.windows.net/ttsjoketemp/" + responsetts.data;
+              console.log("Setting audio source file to " + this.musicSrc);
 
-              var delay = ( function() {
-    var timer = 0;
-    return function(callback, ms) {
-        clearTimeout (timer);
-        timer = setTimeout(callback, ms);
-    };
-})();
-Usage:
-
-delay(function(){
-    // do stuff
-}, 5000 ); // end delay
-
-
-               */
-
-              this.$refs.audioplay.play();
+              console.log("Wait a while for Azure storage to refresh");
+              setTimeout(() => this.$refs.audioplay.play(), 3000);
             })
             .catch(error => { console.log('Error Post ' + error) });
         });
     }
-  },
-  mounted() {
-    //this.$refs.audioplay.play();
   }
 };
 </script>
